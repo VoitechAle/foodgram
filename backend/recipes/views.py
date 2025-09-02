@@ -107,7 +107,7 @@ class ShoppingCartViewSet(mixins.CreateModelMixin,
 
         text = f'Список покупок на {datetime.now().strftime("%d.%m.%Y")}:\n\n'
         for ingredient in shopping_cart:
-            text += (f'{ingredient["ingredient__name"]}: {ingredient["total"]}'
+            text += (f'{ingredient["ingredient__name"]}:{ingredient["total"]}'
                      f'{ingredient["ingredient__measurement_unit"]}\n')
 
         response = HttpResponse(text, content_type='text/plain')
