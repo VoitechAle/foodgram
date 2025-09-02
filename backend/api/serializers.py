@@ -462,5 +462,3 @@ class UserSerializer(serializers.ModelSerializer):
 
 #     def to_representation(self, instance):
 #         return FollowReadSerializer(instance, context=self.context).data
-
-

@@ -36,4 +36,3 @@ class IsAuthorOrAdminOrReadOnly(permissions.BasePermission):
 #                 and request.user.is_active
 #                 and obj.author == request.user
 #                 or request.user.is_staff)
-

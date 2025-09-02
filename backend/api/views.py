@@ -172,7 +172,7 @@ class ShoppingCartViewSet(mixins.CreateModelMixin,
 
 #     @staticmethod
 #     def add_to_list(serializer_class, data, request):
-#         serializer = serializer_class(data=data, 
+#         serializer = serializer_class(data=data,
 # context={'request': request})
 #         serializer.is_valid(raise_exception=True)
 #         serializer.save()
@@ -190,7 +190,7 @@ class ShoppingCartViewSet(mixins.CreateModelMixin,
 #             customer=request.user, recipe=item).delete()
 
 #         if delete_cnt:
-#             return Response(success_message, 
+#             return Response(success_message,
 # status=status.HTTP_204_NO_CONTENT)
 #         else:
 #             return Response(bad_request_message,
@@ -346,5 +346,3 @@ class ShoppingCartViewSet(mixins.CreateModelMixin,
 #         else:
 #             return Response(SUBSCRIBE_BAD_REQUEST_MESSAGE,
 #                             status=status.HTTP_400_BAD_REQUEST)
-
-
