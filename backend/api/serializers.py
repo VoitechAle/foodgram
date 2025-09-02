@@ -122,7 +122,8 @@ class ShoppingCartSerializer(serializers.ModelSerializer):
 class UserShortSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
-        fields = ('id', 'username', 'first_name', 'last_name')
+        fields = (
+            'id', 'username', 'first_name', 'last_name')
 
 
 class SubscribeSerializer(serializers.ModelSerializer):
