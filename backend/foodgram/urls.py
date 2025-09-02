@@ -1,9 +1,8 @@
 
 
-#ver1
-from django.conf.urls.static import static
+# ver1
 from django.contrib import admin
-from django.urls import path, include
+from django.urls import include, path
 
 urlpatterns = [
     path('api/', include('api.urls')),
