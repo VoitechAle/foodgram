@@ -1,6 +1,8 @@
-#recipes/admin.py
+# recipes/admin.py
 from django.contrib import admin
-from .models import Recipe, Tag, Ingredient, RecipeIngredient, ShoppingCart
+
+from .models import Ingredient, Recipe, RecipeIngredient, ShoppingCart, Tag
+
 
 @admin.register(Recipe)
 class RecipeAdmin(admin.ModelAdmin):

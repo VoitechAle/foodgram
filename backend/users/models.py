@@ -1,10 +1,12 @@
 # users/models.py
 
-#ver1
+# ver1
 from django.contrib.auth.models import AbstractUser
 from django.core.validators import RegexValidator
-from recipes.models import Recipe
 from django.db import models
+
+# from recipes.models import Recipe
+
 
 # Create your models here.
 class User(AbstractUser):
@@ -53,27 +55,40 @@ class User(AbstractUser):
     def __str__(self):
         return self.username
 
+
 class Follow(models.Model):
-    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='follower')  # тот, кто подписывается
-    author = models.ForeignKey(User, on_delete=models.CASCADE, related_name='following')  # на кого подписываются
+    user = models.ForeignKey(
+        User, on_delete=models.CASCADE,
+        related_name='follower')  # тот, кто подписывается
+    author = models.ForeignKey(
+        User, on_delete=models.CASCADE,
+        related_name='following')  # на кого подписываются
 
     class Meta:
         constraints = [
-            models.UniqueConstraint(fields=['user', 'author'], name='unique_follow')
+            models.UniqueConstraint(
+                fields=['user', 'author'], name='unique_follow')
         ]
 
     def __str__(self):
         return f"{self.user.username} подписан на {self.author.username}"
 
+
 class Favorite(models.Model):
-    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='favorites')
-    recipe = models.ForeignKey('recipes.Recipe', on_delete=models.CASCADE, related_name='favorited_by')
+    user = models.ForeignKey(
+        User, on_delete=models.CASCADE, related_name='favorites')
+    recipe = models.ForeignKey(
+        'recipes.Recipe',
+        on_delete=models.CASCADE, related_name='favorited_by')
 
     class Meta:
         constraints = [
-            models.UniqueConstraint(fields=['user', 'recipe'], name='unique_favorite')
+            models.UniqueConstraint(
+                fields=['user', 'recipe'], name='unique_favorite')
         ]
 
     def __str__(self):
-        return f"{self.user.username} добавил в избранное рецепт {self.recipe.title}"
-
+        return (
+            f"{self.user.username} добавил в избранное "
+            f"рецепт {self.recipe.title}"
+        )

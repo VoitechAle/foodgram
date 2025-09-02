@@ -1,8 +1,9 @@
 from rest_framework import permissions
 
+
 class IsAuthorOrAdminOrReadOnly(permissions.BasePermission):
     """
-    Разрешение: полный доступ автору и администраторам, 
+    Разрешение: полный доступ автору и администраторам,
     остальным - только чтение.
     """
 

@@ -1,11 +1,13 @@
 # recipes/models.py
 
-from django.db import models
 from django.conf import settings
 from django.core.validators import MinValueValidator
+from django.db import models
+
 
 class Tag(models.Model):
-    name = models.CharField(max_length=200, unique=True, verbose_name='Название тега')
+    name = models.CharField(max_length=200, unique=True,
+                            verbose_name='Название тега')
     slug = models.SlugField(unique=True, verbose_name='Уникальный слаг')
 
     class Meta:
@@ -15,9 +17,12 @@ class Tag(models.Model):
     def __str__(self):
         return self.name
 
+
 class Ingredient(models.Model):
-    name = models.CharField(max_length=200, unique=True, verbose_name='Название ингредиента')
-    measurement_unit = models.CharField(max_length=50, verbose_name='Единица измерения')
+    name = models.CharField(max_length=200, unique=True,
+                            verbose_name='Название ингредиента')
+    measurement_unit = models.CharField(max_length=50,
+                                        verbose_name='Единица измерения')
 
     class Meta:
         verbose_name = 'Ингредиент'
@@ -25,6 +30,7 @@ class Ingredient(models.Model):
 
     def __str__(self):
         return f"{self.name} ({self.measurement_unit})"
+
 
 class Recipe(models.Model):
     author = models.ForeignKey(
@@ -34,9 +40,12 @@ class Recipe(models.Model):
         verbose_name='Автор рецепта'
     )
     title = models.CharField(max_length=200, verbose_name='Название рецепта')
-    image = models.ImageField(upload_to='recipes/', verbose_name='Изображение рецепта')
+    image = models.ImageField(upload_to='recipes/',
+                              verbose_name='Изображение рецепта')
     description = models.TextField(verbose_name='Описание рецепта')
-    ingredients = models.ManyToManyField(Ingredient, through='RecipeIngredient', verbose_name='Ингредиенты')
+    ingredients = models.ManyToManyField(Ingredient,
+                                         through='RecipeIngredient',
+                                         verbose_name='Ингредиенты')
     tags = models.ManyToManyField(Tag, verbose_name='Теги')
     cooking_time = models.PositiveIntegerField(
         validators=[MinValueValidator(1)],
@@ -49,6 +58,7 @@ class Recipe(models.Model):
 
     def __str__(self):
         return self.title
+
 
 class RecipeIngredient(models.Model):
     recipe = models.ForeignKey(
@@ -73,7 +83,9 @@ class RecipeIngredient(models.Model):
         unique_together = ('recipe', 'ingredient')
 
     def __str__(self):
-        return f"{self.ingredient.name} - {self.amount} {self.ingredient.measurement_unit}"
+        return f"""{self.ingredient.name}
+                - {self.amount} {self.ingredient.measurement_unit}"""
+
 
 class ShoppingCart(models.Model):
     cart_owner = models.ForeignKey(
@@ -120,11 +132,13 @@ class ShoppingCart(models.Model):
 #         return f"{self.name} ({self.measurement_unit})"
 
 # class Recipe(models.Model):
-#     author = models.ForeignKey('users.User', on_delete=models.CASCADE, related_name='recipes')
+#     author = models.ForeignKey('users.User', on_delete=models.CASCADE,
+#  related_name='recipes')
 #     title = models.CharField(max_length=200)
 #     image = models.ImageField(upload_to='recipes/')
 #     description = models.TextField()
-#     ingredients = models.ManyToManyField(Ingredient, through='RecipeIngredient')
+#     ingredients = models.ManyToManyField(Ingredient,
+# through='RecipeIngredient')
 #     tags = models.ManyToManyField(Tag)
 #     cooking_time = models.PositiveIntegerField()
 
@@ -132,7 +146,8 @@ class ShoppingCart(models.Model):
 #         return self.title
 
 # class RecipeIngredient(models.Model):
-#     recipe = models.ForeignKey(Recipe, on_delete=models.CASCADE, related_name='recipe_ingredients')
+#     recipe = models.ForeignKey(Recipe, on_delete=models.CASCADE,
+#  related_name='recipe_ingredients')
 #     ingredient = models.ForeignKey(Ingredient, on_delete=models.CASCADE)
 #     amount = models.FloatField()
 
@@ -141,11 +156,12 @@ class ShoppingCart(models.Model):
 #         unique_together = ('recipe', 'ingredient')
 
 #     def __str__(self):
-#         return f"{self.ingredient.name} - {self.amount} {self.ingredient.measurement_unit}"
+#         return f"{self.ingredient.name} - {self.amount}
+#  {self.ingredient.measurement_unit}"
 
 # class ShoppingCart(models.Model):
 #     cart_owner = models.ForeignKey(
-#         settings.AUTH_USER_MODEL,  # ссылаемся на кастомную модель пользователя
+#         settings.AUTH_USER_MODEL,
 #         on_delete=models.CASCADE,
 #         related_name='shopping_cart'
 #     )
