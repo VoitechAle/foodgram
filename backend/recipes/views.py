@@ -98,7 +98,7 @@ class ShoppingCartViewSet(mixins.CreateModelMixin,
             return Response(
                 {'errors': 'Ваша корзина пуста!'},
                 status=status.HTTP_400_BAD_REQUEST)
-        shopping_cart = Ingridient.objects.filter(
+        shopping_cart = Ingredient.objects.filter(
             recipe__shopping_cart__cart_owner=request.user
         ).values(
             'ingredient__name',
