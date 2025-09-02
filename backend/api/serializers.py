@@ -162,5 +162,6 @@ class UserSerializer(serializers.ModelSerializer):
         request = self.context.get('request', None)
         user = request.user if request else None
         if user and user.is_authenticated:
-            return Follow.objects.filter(user=user, author=obj).exists()
+            return Follow.objects.filter(
+                user=user, author=obj).exists()
         return False
