@@ -1,34 +1,13 @@
-# PAGINATION_PAGE_SIZE = 6
+EMAIL_LENGTH = 254
 
-# USER = 'user'
-# ADMIN = 'admin'
-# USERNAME_FIELD = 'email'
-# REQUIRED_FIELDS = ['username', 'password', 'first_name', 'last_name', ]
+MAX_NAME_LENGTH = 256
 
-# USER_ROLES = [
-#     (USER, 'user'),
-#     (ADMIN, 'admin'),
-# ]
+USERNAME_LENGTH = 150
 
-# DEFAULT_FOLLOW_RECIPE_LIMIT = 4
-# MAX_MODEL_FIELD_LENGTH = 200
-# MAX_USER_MODEL_FIELD_LENGTH = 150
+MAX_FIO_LENGTH = 50
 
-# USERNAME_REGEX = r'^[\w.@+-]+$'
+MAX_SLUG_LENGTH = 32
 
-# SHOPPING_CART_FAVORITE_SUCCESS_MESSAGE = 'Рецепт не найден.'
-# SHOPPING_CART_NOT_FOUND_MESSAGE = 'Рецепт удален из корзины.'
-# SHOPPING_CART_BAD_REQUEST_MESSAGE = 'Рецепт не найден в корзине.'
+MAX_TAG_LENGTH = 32
 
-
-# FAVORITE_NOT_FOUND_MESSAGE = 'Рецепт удален из избранного.'
-# FAVORITE_BAD_REQUEST_MESSAGE = (
-#     'Вы пытаетесь удалить рецепт,'
-#     ' которого нет в избранном!')
-
-
-# SUBSCRIBE_SUCCESS_MESSAGE = 'Подписка отменена.'
-# SUBSCRIBE_NOT_FOUND_MESSAGE = 'Подписка не найдена.'
-# SUBSCRIBE_BAD_REQUEST_MESSAGE = (
-#     'Вы пытаетесь отписаться от себя или от'
-#     ' пользователя на которого ещё не подписаны.')
+MAX_RECIPE_NAME_LENGTH = 256
