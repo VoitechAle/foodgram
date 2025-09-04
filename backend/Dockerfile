@@ -4,7 +4,7 @@ RUN mkdir /app
 
 COPY requirements.txt /app
 
-RUN python -m pip install --upgrade pip && pip3 install -r app/requirements.txt --no-cache-dir
+RUN python -m pip install --upgrade pip && pip3 install -r requirements.txt --no-cache-dir
 
 COPY . /app
 
