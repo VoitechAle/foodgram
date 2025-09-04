@@ -1,39 +1,49 @@
-version: '3.9'
+version: '3.8'
 
 volumes:
-  pg_data_production:
-  static:
-  media:
+  pg_data_foodgram:
+  static_volume:
+  media_volume:
 
 services:
   db:
     image: postgres:13.10
     env_file: .env
     volumes:
-      - pg_data:/var/lib/postgresql/data
+      - pg_data_foodgram:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U $${POSTGRES_USER} -d $${POSTGRES_DB}"]
+      interval: 30s
+      timeout: 10s
+      retries: 5
 
   backend:
     image: voitechale/foodgram_backend:latest
     env_file: .env
     volumes: 
-      - static:/backend_static
-      - media:/media/
+      - static_volume:/app/static
+      - media_volume:/app/media
     depends_on:
-      - db
-        
+      db:
+        condition: service_healthy
+    command: >
+      sh -c "python manage.py migrate &&
+             python manage.py collectstatic --noinput &&
+             gunicorn foodgram.wsgi:application --bind 0.0.0.0:8000"
+
   frontend:
-    env_file: .env
     image: voitechale/foodgram_frontend:latest
-    command: cp -r /app/build/. /frontend_static/
     volumes:
-      - static:/frontend_static
+      - static_volume:/app/build
+    command: cp -r /app/build/. /app/static/
 
   gateway:
     image: voitechale/foodgram_gateway:latest
     volumes:
-      - static:/staticfiles/
-      - media:/media/
+      - static_volume:/usr/share/nginx/html/static
+      - media_volume:/usr/share/nginx/html/media
     ports:
-      - 8080:80
+      - "8080:80"
     depends_on:
       - backend
+      - frontend
