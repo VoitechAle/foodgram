@@ -149,4 +149,8 @@ jobs:
       with:
         to: ${{ secrets.TELEGRAM_TO }}
         token: ${{ secrets.TELEGRAM_TOKEN }}
-        message: Deploy done successfully!
+        message: |
+          🚀 Деплой FoodGram успешно выполнен!
+          Автор: ${{ github.actor }}
+          Сообщение коммита: ${{ github.event.commits[0].message }}
+          Коммит: https://github.com/${{ github.repository }}/commit/${{ github.sha }}
