@@ -23,11 +23,93 @@ class RecipeIngredientSerializer(serializers.ModelSerializer):
     )
     name = serializers.CharField(source='ingredient.name', read_only=True)
     measurement_unit = serializers.CharField(
-        source='ingredient.measurement_unit', read_only=True)
+        source='ingredient.measurement_unit', read_only=True
+    )
 
     class Meta:
-        model = Recipe.recipe_ingredients.rel.related_model
+        model = Ingredient  # Исправлено: используйте явную модель
         fields = ('id', 'name', 'measurement_unit', 'amount')
+
+
+class RecipeCRUDSerializer(serializers.ModelSerializer):
+    author = serializers.StringRelatedField(read_only=True)
+    ingredients = RecipeIngredientSerializer(
+        source='recipe_ingredients', many=True
+    )
+    tags = serializers.PrimaryKeyRelatedField(
+        queryset=Tag.objects.all(), many=True
+    )
+    cooking_time = serializers.IntegerField(min_value=1)
+
+    class Meta:
+        model = Recipe
+        fields = ('id', 'author', 'title', 'image', 'description',
+                  'ingredients', 'tags', 'cooking_time')
+
+    def validate_ingredients(self, value):
+        if not value:
+            raise serializers.ValidationError("Нужно указать ингредиенты")
+        ingredients_ids = [item['ingredient'].id for item in value]
+        if len(set(ingredients_ids)) != len(ingredients_ids):
+            raise serializers.ValidationError(
+                "Ингредиенты должны быть уникальными"
+            )
+        for item in value:
+            if item.get('amount', 0) <= 0:
+                raise serializers.ValidationError(
+                    "Количество ингредиента должно быть положительным"
+                )
+        return value
+
+    def create(self, validated_data):
+        ingredients_data = validated_data.pop('recipe_ingredients', [])
+        tags_data = validated_data.pop('tags', [])
+        recipe = Recipe.objects.create(**validated_data)
+        # Добавляем теги
+        recipe.tags.set(tags_data)
+        # Создаем связи с ингредиентами
+        for ingredient_data in ingredients_data:
+            ingredient = ingredient_data['ingredient']
+            amount = ingredient_data['amount']
+            Ingredient.objects.create(  # Исправлено: явное создание
+                recipe=recipe,
+                ingredient=ingredient,
+                amount=amount
+            )
+        return recipe
+
+    def update(self, instance, validated_data):
+        ingredients_data = validated_data.pop('recipe_ingredients', [])
+        tags_data = validated_data.pop('tags', [])
+        # Обновляем основные поля
+        for attr, value in validated_data.items():
+            setattr(instance, attr, value)
+        instance.save()
+        # Обновляем теги
+        instance.tags.set(tags_data)
+        # Обновляем ингредиенты
+        instance.recipe_ingredients.all().delete()
+        for ingredient_data in ingredients_data:
+            ingredient = ingredient_data['ingredient']
+            amount = ingredient_data['amount']
+            Ingredient.objects.create(  # Исправлено: явное создание
+                recipe=instance,
+                ingredient=ingredient,
+                amount=amount
+            )
+        return instance
+
+# class RecipeIngredientSerializer(serializers.ModelSerializer):
+#     id = serializers.PrimaryKeyRelatedField(
+#         source='ingredient', queryset=Ingredient.objects.all()
+#     )
+#     name = serializers.CharField(source='ingredient.name', read_only=True)
+#     measurement_unit = serializers.CharField(
+#         source='ingredient.measurement_unit', read_only=True)
+
+#     class Meta:
+#         model = Recipe.recipe_ingredients.rel.related_model
+#         fields = ('id', 'name', 'measurement_unit', 'amount')
 
 
 # class RecipeCRUDSerializer(serializers.ModelSerializer):
