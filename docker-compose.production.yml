@@ -31,8 +31,8 @@ services:
     image: voitechale/foodgram_frontend:latest
     volumes:
       - static_volume:/app/build
-    command: >
-      sh -c "cp -r /app/build/. /app/static/ && tail -f /dev/null"
+    command: cp -r /app/build/. /frontend_static/
+
 
   gateway:
     image: voitechale/foodgram_gateway:latest
