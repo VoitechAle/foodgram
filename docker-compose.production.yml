@@ -32,8 +32,9 @@ services:
     image: voitechale/foodgram_frontend:latest
     env_file: .env
     volumes:
-      - ../frontend/:/app/result_build/
-
+      - static_volume:/app/result_build  # Монтируем в result_build вместо static
+    command: >
+      sh -c "cp -r /app/build/. /app/result_build/ && echo 'Files copied'"
 
   gateway:
     image: voitechale/foodgram_gateway:latest
