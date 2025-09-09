@@ -30,8 +30,10 @@ services:
 
   frontend:
     image: voitechale/foodgram_frontend:latest
+    env_file: .env
+    command: cp -r /app/build/. /frontend_static/
     volumes:
-      - ./frontend/:/app/result_build/
+      - static_volume:/app/static 
 
 
   gateway:
