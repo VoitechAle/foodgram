@@ -26,12 +26,6 @@ services:
     depends_on:
       db:
         condition: service_healthy
-    ports:
-    - "8080:8000"  # Добавьте эту строку - маппинг портов
-    command: >
-      sh -c "python manage.py migrate &&
-             python manage.py collectstatic --noinput &&
-             gunicorn foodgram.wsgi:application --bind 0.0.0.0:8000"
 
   frontend:
     image: voitechale/foodgram_frontend:latest
